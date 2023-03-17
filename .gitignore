@@ -12,6 +12,8 @@ composer.lock
 package-lock.json
 package-jquery.json.back
 npm-debug.log
+database.db
+database.db*
 yarn-error.log
 /logs
 /WebDBFShow/database.db
