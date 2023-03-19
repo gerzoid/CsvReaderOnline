@@ -1,4 +1,6 @@
+using Contracts;
 using CSVReader.Extensions;
+using CsvService;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -44,6 +46,8 @@ namespace CSVReader {
                 options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection"), b => b.MigrationsAssembly("CSVReader"));
             });
             #endregion
+
+            builder.Services.AddScoped<ICsvService, CsvService.CsvService>();
 
 
             var app = builder.Build();
