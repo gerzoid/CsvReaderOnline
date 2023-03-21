@@ -5,6 +5,7 @@ using Entities.Other;
 using Entities.Query;
 using Utils;
 using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CsvService
 {
@@ -59,12 +60,26 @@ namespace CsvService
                 //Encoding = Encoding.GetEncoding(201),
                 TrimOptions = TrimOptions.Trim,
             };
-            int countRecords = 0;
+            var rows = new List<Dictionary<string, object>>();
 
-            CsvFileInfo fileInfo = new CsvFileInfo();
+            int startRow = queryData.PageSize * (queryData.Page - 1);
+            startRow = startRow >= dbf.CountRows ? dbf.CountRows : startRow;
+            int endRow = startRow + queryData.PageSize > dbf.CountRows ? dbf.CountRows : startRow + queryData.PageSize;
+
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, config))
             {
+                for (int indexRow = queryData.startRow; indexRow < endRow; indexRow++)
+                {
+                    Dictionary<string, object> values = new Dictionary<string, object>();
+                    for (int i = 0; i < dbf.CountColumns - 1; i++)
+                    {
+                        values.Add(dbf.GetColumnName(i), dbf.GetValue(i, indexRow));
+                    }
+                    values.Add("_IS_DELETED_", dbf.IsDeleted(indexRow));
+                    rows.Add(values);
+                }
+
                 if (csv.Read())
                 {
                 }
