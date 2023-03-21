@@ -3,6 +3,7 @@ using CSVReader.Extensions;
 using CsvService;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Utils;
 
 namespace CSVReader {
     public class Program {
@@ -48,6 +49,8 @@ namespace CSVReader {
             #endregion
 
             builder.Services.AddScoped<ICsvService, CsvService.CsvService>();
+
+            Helper.UploadFolder = builder.Configuration["UploadFolder"];
 
 
             var app = builder.Build();

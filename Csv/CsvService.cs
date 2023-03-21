@@ -1,50 +1,80 @@
 ﻿using Contracts;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Entities.Other;
+using Entities.Query;
+using Utils;
 using System.Globalization;
-using System.Text;
 
 namespace CsvService
 {
     public class CsvService: ICsvService
     {
-        public bool OpenFile(string path)
+        public CsvFileInfo OpenFile(string path, bool hasHeader = true)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                HasHeaderRecord = true,
+                HasHeaderRecord = hasHeader,
                 DetectDelimiter = true,
-                IgnoreBlankLines = true,
-                Encoding = Encoding.GetEncoding(201),
+                IgnoreBlankLines = true,                
+                //Encoding = Encoding.GetEncoding(201),
                 TrimOptions = TrimOptions.Trim,
             };
-
+            int countRecords = 0;
+            
+            CsvFileInfo fileInfo = new CsvFileInfo();            
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, config))
             {
-                while (csv.Read())
+
+                if (csv.Read())
                 {
-
-
-                    var c = csv.Context;
-                    var s = c.Reader.Parser.RawRow;
-                    var s1 = c.Reader.Parser.RawRecord;
-                    var s2 = c.Parser.RawRecord.ToString();
-                    var s3 = c.Parser.Record;
-
-                    var cs = new CsvParser(new StringReader(s1), config);
-                    while (true)
+                    fileInfo.CountColumns = csv.Parser.Count;
+                    if (hasHeader)
+                        fileInfo.Columns = csv.Parser.Record.Select(p => new Column() { Name = p }).ToArray();
+                    else
                     {
-                        var read = cs.Read();
-                        if (!read)
-                            break;
-
+                        fileInfo.Columns = Enumerable.Range(1, fileInfo.CountColumns).Select(p => new Column() { Name = "Column" + p }).ToArray();
+                        countRecords++;
                     }
                 }
-
-               // var records = c.Reader.GetRecords<dynamic>().ToArray(); // если структура файла неизвестна                                                         // или                                                         
+                while (csv.Read())
+                {
+                    countRecords++;
+                }
+                fileInfo.CountRecords = countRecords;               
             }
-            return false;
+            return fileInfo;
+        }
+
+        public CsvFileInfo GetData(QueryGetData queryData)
+        {
+            string path = Helper.GetUploadPathFolder(queryData.FileName);
+            
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = queryData.Options.HasHeader,
+                DetectDelimiter = true,
+                IgnoreBlankLines = true,
+                //Encoding = Encoding.GetEncoding(201),
+                TrimOptions = TrimOptions.Trim,
+            };
+            int countRecords = 0;
+
+            CsvFileInfo fileInfo = new CsvFileInfo();
+            using (var reader = new StreamReader(path))
+            using (var csv = new CsvReader(reader, config))
+            {
+                if (csv.Read())
+                {
+                }
+                while (csv.Read())
+                {
+                    countRecords++;
+                }
+                fileInfo.CountRecords = countRecords;
+            }
+            return fileInfo;
         }
     }
 }

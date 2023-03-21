@@ -13,8 +13,8 @@ namespace CSVReader.Controllers {
         }
 
         public IActionResult Index() {
-            _service.OpenFile("D:\\!DBF\\1.csv");
-            return View();
+            var answer = _service.OpenFile("c:\\1\\test.csv", true);
+            return View(answer);
         }
 
         public IActionResult Privacy() {

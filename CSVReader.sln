@@ -7,12 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVReader", "CSVReader\CSVR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{10BFACB3-1CF8-491F-8E0E-5C5D52849A77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvService", "Csv\CsvService.csproj", "{A8A2763D-DD16-44E5-A195-8C8BE7187D88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvService", "Csv\CsvService.csproj", "{A8A2763D-DD16-44E5-A195-8C8BE7187D88}"
 	ProjectSection(ProjectDependencies) = postProject
 		{54924A18-0189-455A-80A4-96919E492F8F} = {54924A18-0189-455A-80A4-96919E492F8F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{54924A18-0189-455A-80A4-96919E492F8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Contracts.csproj", "{54924A18-0189-455A-80A4-96919E492F8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{1A843040-6F72-4F23-8A0F-8E2892C8EEFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{54924A18-0189-455A-80A4-96919E492F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54924A18-0189-455A-80A4-96919E492F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54924A18-0189-455A-80A4-96919E492F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A843040-6F72-4F23-8A0F-8E2892C8EEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A843040-6F72-4F23-8A0F-8E2892C8EEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A843040-6F72-4F23-8A0F-8E2892C8EEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A843040-6F72-4F23-8A0F-8E2892C8EEFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

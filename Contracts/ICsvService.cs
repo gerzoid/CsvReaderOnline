@@ -1,7 +1,9 @@
-﻿namespace Contracts
+﻿using Entities.Other;
+
+namespace Contracts
 {
     public interface ICsvService
     {
-        public bool OpenFile(string path);
+        public CsvFileInfo OpenFile(string path, bool hasHeader = false);
     }
 }
