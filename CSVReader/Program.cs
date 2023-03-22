@@ -1,7 +1,9 @@
 using Contracts;
+using Contracts.Repository;
 using CSVReader.Extensions;
 using CsvService;
 using Microsoft.EntityFrameworkCore;
+using Repository;
 using Serilog;
 using Utils;
 
@@ -49,8 +51,9 @@ namespace CSVReader {
             #endregion
 
             builder.Services.AddScoped<ICsvService, CsvService.CsvService>();
+            builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
-            Helper.UploadFolder = builder.Configuration["UploadFolder"];
+            Helper.UploadFolder = builder.Configuration["UploadFolder"] ?? "wwwroot/upload";
 
 
             var app = builder.Build();

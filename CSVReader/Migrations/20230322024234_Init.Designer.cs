@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSVReader.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230322005314_Add_fields_to_file_table")]
-    partial class Add_fields_to_file_table
+    [Migration("20230322024234_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,10 @@ namespace CSVReader.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ColumnsCount")
+                    b.Property<int>("CountColumns")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CountRows")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -42,9 +45,6 @@ namespace CSVReader.Migrations
 
                     b.Property<string>("Path")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("RowsCount")
-                        .HasColumnType("INTEGER");
 
                     b.Property<char>("Separator")
                         .HasColumnType("TEXT");

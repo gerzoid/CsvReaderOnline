@@ -22,7 +22,10 @@ namespace CSVReader.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ColumnsCount")
+                    b.Property<int>("CountColumns")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CountRows")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -39,9 +42,6 @@ namespace CSVReader.Migrations
 
                     b.Property<string>("Path")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("RowsCount")
-                        .HasColumnType("INTEGER");
 
                     b.Property<char>("Separator")
                         .HasColumnType("TEXT");

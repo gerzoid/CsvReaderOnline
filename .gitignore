@@ -1,4 +1,5 @@
 .vs
+**/wwwroot/assets/
 **/wwwroot/upload/
 **/wwwroot/dist/
 **/wwwroot/lib/
@@ -16,6 +17,6 @@ database.db
 database.db*
 yarn-error.log
 /logs
-/WebDBFShow/database.db
-/WebDBFShow/database.db-shm
-/WebDBFShow/database.db-wal
+*database.db
+CSVReader/database.db-shm
+CSVReader/database.db-wal

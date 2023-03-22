@@ -1,6 +1,7 @@
 <script setup>
 import { InboxOutlined } from "@ant-design/icons-vue";
 import { showNotification } from "../plugins/notification";
+import { AUploadDragger} from 'ant-design-vue';
 import { ref } from "vue";
 import { useFileStore } from "../stores/filestore";
 import Api from "../plugins/api";

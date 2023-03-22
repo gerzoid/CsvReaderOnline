@@ -33,6 +33,10 @@ namespace CSVReader.Migrations
                     Path = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Size = table.Column<long>(type: "INTEGER", nullable: true),
+                    HasHeader = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Separator = table.Column<char>(type: "TEXT", nullable: false),
+                    CountColumns = table.Column<int>(type: "INTEGER", nullable: false),
+                    CountRows = table.Column<int>(type: "INTEGER", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
