@@ -5,12 +5,15 @@ using Entities.Other;
 using Entities.Query;
 using Utils;
 using System.Globalization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CsvService
 {
     public class CsvService: ICsvService
     {
+        public CsvService()
+        {
+        }
+
         public CsvFileInfo OpenFile(string path, bool hasHeader = true)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
