@@ -14,6 +14,10 @@ namespace Entities.Models {
         public string? Path { get; set; }
         public DateTime? CreatedAt { get; set; }
         public long? Size { get; set; }
+        public bool HasHeader { get; set; }
+        public char Separator { get; set; }
+        public int ColumnsCount { get; set; }
+        public int RowsCount { get; set; }
         public Guid UserId { get; set; }
         public Users? User { get; set; }
     }

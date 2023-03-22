@@ -62,34 +62,34 @@ namespace CsvService
             };
             var rows = new List<Dictionary<string, object>>();
 
-            int startRow = queryData.PageSize * (queryData.Page - 1);
-            startRow = startRow >= dbf.CountRows ? dbf.CountRows : startRow;
-            int endRow = startRow + queryData.PageSize > dbf.CountRows ? dbf.CountRows : startRow + queryData.PageSize;
+            /*  int startRow = queryData.PageSize * (queryData.Page - 1);
+              startRow = startRow >= dbf.CountRows ? dbf.CountRows : startRow;
+              int endRow = startRow + queryData.PageSize > dbf.CountRows ? dbf.CountRows : startRow + queryData.PageSize;
 
-            using (var reader = new StreamReader(path))
-            using (var csv = new CsvReader(reader, config))
-            {
-                for (int indexRow = queryData.startRow; indexRow < endRow; indexRow++)
-                {
-                    Dictionary<string, object> values = new Dictionary<string, object>();
-                    for (int i = 0; i < dbf.CountColumns - 1; i++)
-                    {
-                        values.Add(dbf.GetColumnName(i), dbf.GetValue(i, indexRow));
-                    }
-                    values.Add("_IS_DELETED_", dbf.IsDeleted(indexRow));
-                    rows.Add(values);
-                }
+              using (var reader = new StreamReader(path))
+              using (var csv = new CsvReader(reader, config))
+              {
+                  for (int indexRow = queryData.startRow; indexRow < endRow; indexRow++)
+                  {
+                      Dictionary<string, object> values = new Dictionary<string, object>();
+                      for (int i = 0; i < dbf.CountColumns - 1; i++)
+                      {
+                          values.Add(dbf.GetColumnName(i), dbf.GetValue(i, indexRow));
+                      }
+                      values.Add("_IS_DELETED_", dbf.IsDeleted(indexRow));
+                      rows.Add(values);
+                  }
 
-                if (csv.Read())
-                {
-                }
-                while (csv.Read())
-                {
-                    countRecords++;
-                }
-                fileInfo.CountRecords = countRecords;
-            }
-            return fileInfo;
+                  if (csv.Read())
+                  {
+                  }
+                  while (csv.Read())
+                  {
+                      countRecords++;
+                  }
+                  fileInfo.CountRecords = countRecords;
+              }*/
+            return null;
         }
     }
 }
