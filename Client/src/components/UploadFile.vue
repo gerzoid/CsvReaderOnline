@@ -1,13 +1,12 @@
 <script setup>
 import { InboxOutlined } from "@ant-design/icons-vue";
 import { showNotification } from "../plugins/notification";
-import { AUploadDragger} from 'ant-design-vue';
+import { UploadDragger} from 'ant-design-vue';
 import { ref } from "vue";
 import { useFileStore } from "../stores/filestore";
 import Api from "../plugins/api";
 
 const emit = defineEmits(["upload-completed"]);
-
 var fileList = ref([]);
 const fileStore = useFileStore();
 
@@ -31,7 +30,7 @@ var uploadFiles = ({ onSuccess, onError, file }) => {
 </script>
 
 <template>
-  <a-upload-dragger
+  <upload-dragger
     v-model:fileList="fileList"
     name="file"
     accept=".dbf"
@@ -49,7 +48,7 @@ var uploadFiles = ({ onSuccess, onError, file }) => {
       Поддерживаются только dbf файлы (в скором времени csv и txt с разделителями (аналог
       csv))
     </p>
-  </a-upload-dragger>
+  </upload-dragger>
 </template>
 
 <style scoped>

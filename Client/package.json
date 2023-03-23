@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build --watch",
+    "dev2": "vite",
+    "dev": "vite build --mode development --watch --emptyOutDir --config vite.config.js",
+    "build": "vite build --emptyOutDir --config vite.config.production.js",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -18,6 +19,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
     "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-copy-glob": "^0.3.2",
+    "rollup-plugin-watch": "^1.0.2",
     "vite": "^4.2.0"
   }
 }

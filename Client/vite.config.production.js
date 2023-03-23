@@ -11,16 +11,7 @@ export default defineConfig({
   ], { watch: 'dist/*' })*/
   ],
   build: {
-//Для Development сборки
-    //sourcemap: true,
-    minify: false,
-    outDir: '../CSVReader/wwwroot/assets',
-    rollupInputOptions: {
-      treeshake: false
-    },
-    cacheDir: '.vite-cache',
-    brotliSize: false, // отключение сжатия с помощью brotli
-//Конец для Development сборки
+    sourcemap: true,
     rollupOptions: {
       input: {
         main: 'src/main.js',
