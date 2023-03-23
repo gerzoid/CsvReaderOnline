@@ -21,11 +21,14 @@ export default defineConfig({
     cacheDir: '.vite-cache',
     brotliSize: false, // отключение сжатия с помощью brotli
 //Конец для Development сборки
-    rollupOptions: {
+  ssr: false,
+  rollupOptions: {
       input: {
+        firstpage: 'src/firstpage.js',
         main: 'src/main.js',
       },
       output: {
+        manualChunks: undefined,
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
         assetFileNames: `[name].[ext]`

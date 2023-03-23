@@ -12,8 +12,11 @@ export default defineConfig({
   ],
   build: {
     sourcemap: true,
+    outDir: '../CSVReader/wwwroot/assets',
+    ssr: false,
     rollupOptions: {
       input: {
+        firstpage: 'src/firstpage.js',
         main: 'src/main.js',
       },
       output: {
