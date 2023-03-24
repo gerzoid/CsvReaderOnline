@@ -4,12 +4,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-<ul>
-CountRecords = @Model.CountRecords  CountColumns = @Model.CountColumns;
-@foreach (var column in Model.Columns)
-{
-    <li>@column.Name</li>
+@section Scripts{
+    <script type="module" src="~/dist/firstpage.js" asp-append-version="true"></script>
 }
+
+<ul>
+
 </ul>
 
 
