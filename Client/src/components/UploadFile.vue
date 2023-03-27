@@ -33,7 +33,7 @@ var uploadFiles = ({ onSuccess, onError, file }) => {
   <upload-dragger
     v-model:fileList="fileList"
     name="file"
-    accept=".dbf"
+    accept=".csv"
     :multiple="false"
     :customRequest="uploadFiles"
   >
@@ -45,9 +45,10 @@ var uploadFiles = ({ onSuccess, onError, file }) => {
     </p>
     <p class="ant-upload-hint">Максимальный размер файла <b>50Мб</b></p>
     <p class="ant-upload-hint">
-      Поддерживаются только dbf файлы (в скором времени csv и txt с разделителями (аналог
-      csv))
+      Поддерживаются только CSV файлы и TXT с разделителями
     </p>
+  <p>..
+  </p>
   </upload-dragger>
 </template>
 

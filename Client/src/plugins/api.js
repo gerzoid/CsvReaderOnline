@@ -38,6 +38,7 @@ export default class Api {
         formData.append("formfile", file);
         formData.append("filename", file.name);
         formData.append("userId", fileStore.userId);
+        console.log('1231232');
         return axio
         .post("/api/Files", formData, {
           headers: {

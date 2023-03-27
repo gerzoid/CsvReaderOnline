@@ -1,12 +1,13 @@
 <script setup>
 import UploadFile from './components/UploadFile.vue'
-console.log('sddsg');
+import ListUploadFiles from './components/ListUploadFiles.vue'
 </script>
 
 <template>
-  <UploadFile>123</UploadFile>
-
+  <UploadFile></UploadFile>
+  <list-upload-files></list-upload-files>
 </template>
 
 <style scoped>
+
 </style>

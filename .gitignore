@@ -17,6 +17,8 @@ database.db
 database.db*
 yarn-error.log
 /logs
+database.*
 *database.db
+CSVReader/database.db
 CSVReader/database.db-shm
 CSVReader/database.db-wal

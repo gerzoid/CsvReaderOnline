@@ -53,7 +53,7 @@ namespace CsvService
             return info;
         }
 
-        private void CheckCountFileByUserAndDelete(string userId)
+        public void CheckCountFileByUserAndDelete(string userId)
         {
             var files = _manager.FilesRepository.Find(d => d.UserId == Guid.Parse(userId)).OrderByDescending(d => d.CreatedAt).Skip(Helper.COUNT_MAX_UPLOAD_FILES).ToList();
             foreach (var item in files)

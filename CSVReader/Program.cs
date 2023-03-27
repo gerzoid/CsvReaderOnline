@@ -58,8 +58,6 @@ namespace CSVReader {
 
             var app = builder.Build();
 
-            app.UseCors();
-
             app.ConfigureExceptionHandler(app.Logger);
 
             // Configure the HTTP request pipeline.
@@ -75,7 +73,9 @@ namespace CSVReader {
             app.UseStaticFiles();
 
             app.UseRouting();
-            
+
+            app.UseCors();
+
             app.UseCookiePolicy();
             
             app.UseAuthorization();
@@ -84,7 +84,7 @@ namespace CSVReader {
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-
+            
             app.Run();
         }
     }
