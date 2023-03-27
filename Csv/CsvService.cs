@@ -96,11 +96,13 @@ namespace CsvService
             };
             int countRecords = 0;
             
-            CsvFileInfo fileInfo = new CsvFileInfo();            
+            CsvFileInfo fileInfo = new CsvFileInfo();      
+            fileInfo.HasHeader = hasHeader;
+            
+            fileInfo.FileName = Path.GetFileName(path);
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, config))
             {
-
                 if (csv.Read())
                 {
                     fileInfo.CountColumns = csv.Parser.Count;
@@ -116,7 +118,8 @@ namespace CsvService
                 {
                     countRecords++;
                 }
-                fileInfo.CountRecords = countRecords;               
+                fileInfo.CountRecords = countRecords;
+                fileInfo.Separator = csv.Parser.Delimiter;
             }
             return fileInfo;
         }
