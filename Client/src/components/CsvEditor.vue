@@ -8,45 +8,23 @@ import { ref, watch, toRaw, onMounted } from "vue";
 
 const fileStore = useFileStore();
 
-//Изменения не требующие синхронизации с бэком
-var notSyncChanges = false;
-console.log(toRaw(fileStore.fileInfo.columns));
-
-
 var hot = ref(null);
+
 registerAllModules();
+
+console.log(toRaw(fileStore.fileInfo.columns));
 
 var settings = ref({
   licenseKey: "non-commercial-and-evaluation",
   columns: toRaw(fileStore.fileInfo.columns),
-  rowHeaders(index) {
-    return (fileStore.options.page - 1) * fileStore.options.pageSize + index + 1;
-  },
   colHeaders: true,
-  width: "100%",
   height: "100%",
+
   manualColumnResize: true,
   columnSorting: true,
   wordWrap: false,
   autoColumnSize: true,
-  beforeOnCellMouseDown: beforeOnCellMouseDown,
 });
-
-function beforeOnCellMouseDown(event, coords, TD, controller) {
-  fileStore.selectedColumnType =
-    fileStore.fileInfo.columns[coords.col].dbType +
-    "(" +
-    fileStore.fileInfo.columns[coords.col].dbSize +
-    ")";
-}
-
-watch(
-  () => [fileStore.options.page, fileStore.options.pageSize, fileStore.needReload],
-  () => {
-    getData();
-    fileStore.needReload = false;
-  }
-);
 
 //Получение данных с сервера
 function getData() {
@@ -58,7 +36,8 @@ getData();
 </script>
 
 <template>
-  <hot-table ref="hot" :settings="settings"></hot-table>
+   <hot-table :settings="settings"></hot-table>
+ <!-- <hot-table ref="hot" :settings="settings"></hot-table>-->
 </template>
 
 <style scoped>

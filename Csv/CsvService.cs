@@ -110,10 +110,10 @@ namespace CsvService
                 {
                     fileInfo.CountColumns = csv.Parser.Count;
                     if (hasHeader)
-                        fileInfo.Columns = csv.Parser.Record.Select(p => new Column() { Name = p, Size=50, Type="text"}).ToArray();
+                        fileInfo.Columns = csv.Parser.Record.Select(p => new Column() { Name = p, Title=p, Size=50, Type="text"}).ToArray();
                     else
                     {
-                        fileInfo.Columns = Enumerable.Range(1, fileInfo.CountColumns).Select(p => new Column() { Name = "Column" + p, Size = 50, Type = "text" }).ToArray();
+                        fileInfo.Columns = Enumerable.Range(1, fileInfo.CountColumns).Select(p => new Column() { Name = "Column" + p,Title = "Column" + p, Size = 50, Type = "text" }).ToArray();
                         countRecords++;
                     }
                 }
