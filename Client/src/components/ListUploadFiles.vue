@@ -1,8 +1,8 @@
 <script setup>
 import Api from "../plugins/api";
 import { ref, watch, onMounted } from "vue";
+import { Spin } from "ant-design-vue";
 import { useFileStore } from "../stores/filestore";
-import { setCookie } from "../plugins/cookies";
 import moment from "moment";
 
 const fileStore = useFileStore();
@@ -16,19 +16,13 @@ var spinnerCheckFiles = ref(false);
 //Проверитьь список загруженных файлов по юзеру
 function CheckUploadedFiles() {
   spinnerCheckFiles.value = true;
-  Api.CheckUploadedFiles()
-    .then((result) => {
-      let date = new Date();
-      date = new Date(date.setMonth(date.getMonth() + 8));
-      setCookie("dbfshowuser", result.data.usersId, { expiries: date.toUTCString() });
-      fileStore.userId = result.data.usersId;
-      files.value = result.data.files;
+  fileStore.CheckUploadedFiles().then(
+    result=>{
+      files.value = result;
+      spinnerCheckFiles.value=false;
       hasLoadedFiles = true;
-    })
-    .catch((e) => {
-      console.log(e);
-    })
-    .finally(() => (spinnerCheckFiles.value = false));
+    }, error=>{console.log('error')});//.then(error=>{});
+
 }
 
 onMounted(() => {
@@ -41,7 +35,7 @@ function onClick(file) {
 </script>
 
 <template>
-  <a-spin :spinning="spinnerCheckFiles" size="large">
+  <spin :spinning="spinnerCheckFiles" size="large">
     <div class="uploadedfiles" v-if="hasLoadedFiles == true">
       <div class="zagolovok">
         Ранее загруженные файлы, доступные для дальнейшего редактирования
@@ -55,7 +49,7 @@ function onClick(file) {
       </div>
     </div>
     <div v-else class="zagolovok">Загруженные файлы отсутствуют</div>
-  </a-spin>
+  </spin>
 </template>
 
 <style>

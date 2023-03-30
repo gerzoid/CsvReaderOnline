@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Entities.Other;
+using Entities.Query;
 
 namespace Contracts
 {
@@ -9,5 +10,6 @@ namespace Contracts
         public CsvFileInfo OpenFile(string path, bool hasHeader = false);
         public void CheckCountFileByUserAndDelete(string userId);
         public Users GetOrCreateUser(string userId);
+        public List<Dictionary<string, object>> GetData(QueryGetData queryData);
     }
 }

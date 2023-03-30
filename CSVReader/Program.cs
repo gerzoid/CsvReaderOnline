@@ -5,6 +5,7 @@ using CsvService;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Serilog;
+using System.Text;
 using Utils;
 
 namespace CSVReader {
@@ -55,6 +56,7 @@ namespace CSVReader {
 
             Helper.UploadFolder = builder.Configuration["UploadFolder"] ?? "wwwroot/upload";
 
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             var app = builder.Build();
 

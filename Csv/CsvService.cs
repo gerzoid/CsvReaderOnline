@@ -7,6 +7,7 @@ using Utils;
 using System.Globalization;
 using Contracts.Repository;
 using Entities.Models;
+using System.Text;
 
 namespace CsvService
 {
@@ -41,6 +42,7 @@ namespace CsvService
             
             var info = OpenFile(newFile.Path);
 
+            newFile.Separator = info.Separator[0];
             newFile.CountColumns = info.CountColumns;
             newFile.CountRows = info.CountRecords;
 
@@ -90,6 +92,7 @@ namespace CsvService
             {
                 HasHeaderRecord = hasHeader,
                 DetectDelimiter = true,
+                Quote = '\0',
                 IgnoreBlankLines = true,                
                 //Encoding = Encoding.GetEncoding(201),
                 TrimOptions = TrimOptions.Trim,
@@ -107,10 +110,10 @@ namespace CsvService
                 {
                     fileInfo.CountColumns = csv.Parser.Count;
                     if (hasHeader)
-                        fileInfo.Columns = csv.Parser.Record.Select(p => new Column() { Name = p }).ToArray();
+                        fileInfo.Columns = csv.Parser.Record.Select(p => new Column() { Name = p, Size=50, Type="text"}).ToArray();
                     else
                     {
-                        fileInfo.Columns = Enumerable.Range(1, fileInfo.CountColumns).Select(p => new Column() { Name = "Column" + p }).ToArray();
+                        fileInfo.Columns = Enumerable.Range(1, fileInfo.CountColumns).Select(p => new Column() { Name = "Column" + p, Size = 50, Type = "text" }).ToArray();
                         countRecords++;
                     }
                 }
@@ -124,48 +127,60 @@ namespace CsvService
             return fileInfo;
         }
 
-        public CsvFileInfo GetData(QueryGetData queryData)
+        public List<Dictionary<string, object>> GetData(QueryGetData queryData)
         {
             string path = Helper.GetUploadPathFolder(queryData.FileName);
-            
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = queryData.Options.HasHeader,
                 DetectDelimiter = true,
                 IgnoreBlankLines = true,
-                //Encoding = Encoding.GetEncoding(201),
+                Encoding = Encoding.GetEncoding("Windows-1251"),
+                Escape ='|',
                 TrimOptions = TrimOptions.Trim,
-            };
+                BadDataFound = null,                
+                Mode = CsvMode.NoEscape
+            };            
             var rows = new List<Dictionary<string, object>>();
 
-            /*  int startRow = queryData.PageSize * (queryData.Page - 1);
-              startRow = startRow >= dbf.CountRows ? dbf.CountRows : startRow;
-              int endRow = startRow + queryData.PageSize > dbf.CountRows ? dbf.CountRows : startRow + queryData.PageSize;
+            
+              int startRow = queryData.Options.PageSize * (queryData.Options.Page - 1);
+              startRow = startRow >= queryData.CountRows? queryData.CountRows : startRow;
+              int endRow = startRow + queryData.Options.PageSize > queryData.CountRows ? queryData.CountRows : startRow + queryData.Options.PageSize;
 
-              using (var reader = new StreamReader(path))
-              using (var csv = new CsvReader(reader, config))
-              {
-                  for (int indexRow = queryData.startRow; indexRow < endRow; indexRow++)
-                  {
-                      Dictionary<string, object> values = new Dictionary<string, object>();
-                      for (int i = 0; i < dbf.CountColumns - 1; i++)
-                      {
-                          values.Add(dbf.GetColumnName(i), dbf.GetValue(i, indexRow));
-                      }
-                      values.Add("_IS_DELETED_", dbf.IsDeleted(indexRow));
-                      rows.Add(values);
-                  }
+            using (var reader = new StreamReader(path, Encoding.GetEncoding("Windows-1251")))
+            using (var csv = new CsvReader(reader, config))
+            {
+                string[] nameColumns;
+                if (queryData.Options.HasHeader)
+                {                                                         
+                    csv.Read();
+                    nameColumns = new string[csv.Parser.Count];
+                    for (int z = 0; z < csv.Parser.Count; z++)                    
+                        nameColumns[z] = csv[z].ToString().Trim();
+                    
+                }
+                else
+                {
+                    nameColumns = new string[csv.Parser.Count];
+                    for (int z = 0; z < csv.Parser.Count; z++)
+                        nameColumns[z] = "column" + z;                   
+                }
 
-                  if (csv.Read())
-                  {
-                  }
-                  while (csv.Read())
-                  {
-                      countRecords++;
-                  }
-                  fileInfo.CountRecords = countRecords;
-              }*/
-            return null;
+                for (var i = 0; i < startRow; i++)
+                    csv.Read();
+                for (int x = startRow; x < endRow; x++)
+                {
+                    csv.Read();
+                    Dictionary<string, object> values = new Dictionary<string, object>();
+                    for (int i = 0; i < csv.Parser.Count; i++)
+                    {
+                        values.Add(nameColumns[i], csv[i].ToString());
+                    }
+                    rows.Add(values);
+                }
+                return rows;
+            }
         }
     }
 }

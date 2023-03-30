@@ -1,7 +1,7 @@
 <script setup>
 import { InboxOutlined } from "@ant-design/icons-vue";
 import { showNotification } from "../plugins/notification";
-import { UploadDragger} from 'ant-design-vue';
+import { UploadDragger } from "ant-design-vue";
 import { ref } from "vue";
 import { useFileStore } from "../stores/filestore";
 import Api from "../plugins/api";
@@ -12,19 +12,13 @@ const fileStore = useFileStore();
 
 var uploadFiles = ({ onSuccess, onError, file }) => {
   var hasError = false;
-  fileStore.originalFileName = file.name;
-  Api.UploadFile(file)
-    .then((data) => {
-      onSuccess(null, file);
-      emit("upload-completed", data.data);
-    })
-    .catch((e) => {
-      console.log("Ошибка: " + e);
-      hasError = true;
-    })
-    .finally(() => {
-      if (hasError)
-        showNotification("error", "Внимание", "Файл не загружен. Произошла ошибка", 5);
+  fileStore.UploadFile(file).then(
+    result=>{
+      localStorage.setItem('csveditor_fileinfo', JSON.stringify(fileStore.fileInfo));
+      window.location.replace('/editor');
+    },
+     error=>{
+      showNotification("error", "Внимание", "Файл не загружен. Произошла ошибка", 5)
     });
 };
 </script>
@@ -44,11 +38,8 @@ var uploadFiles = ({ onSuccess, onError, file }) => {
       Щелкните мышкой или перетащите файл в эту область для его загрузки
     </p>
     <p class="ant-upload-hint">Максимальный размер файла <b>50Мб</b></p>
-    <p class="ant-upload-hint">
-      Поддерживаются только CSV файлы и TXT с разделителями
-    </p>
-  <p>..
-  </p>
+    <p class="ant-upload-hint">Поддерживаются только CSV файлы и TXT с разделителями</p>
+    <p>..</p>
   </upload-dragger>
 </template>
 

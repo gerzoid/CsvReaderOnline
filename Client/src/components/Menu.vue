@@ -40,10 +40,10 @@ function onClick(e) {
     >
       <a-sub-menu key="1">
         <template selected #title>Файл</template>
-        <a-menu-item :disabled="!fileStore.isLoading" key="close">Закрыть</a-menu-item>
+        <a-menu-item :disabled="!fileStore.itsLoaded" key="close">Закрыть</a-menu-item>
         <a-menu-item disabled key="export">Экспорт</a-menu-item>
         <a-menu-item
-          :disabled="!fileStore.isLoading"
+          :disabled="!fileStore.itsLoaded"
           @click="Api.DownloadFile()"
           key="save"
         >
@@ -53,13 +53,13 @@ function onClick(e) {
       <a-menu-item disabled key="2">Правка</a-menu-item>
       <a-sub-menu key="3">
         <template #title>Разное</template>
-        <a-menu-item :disabled="!fileStore.isLoading" key="codepage"
+        <a-menu-item :disabled="!fileStore.itsLoaded" key="codepage"
           >Кодировка</a-menu-item
         >
       </a-sub-menu>
       <a-sub-menu key="4">
         <template #title>Статистика</template>
-        <a-menu-item :disabled="!fileStore.isLoading" key="statistics"
+        <a-menu-item :disabled="!fileStore.itsLoaded" key="statistics"
           >Статистика...</a-menu-item
         >
       </a-sub-menu>

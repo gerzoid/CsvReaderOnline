@@ -23,10 +23,12 @@ export default class Api {
     static GetData(){
         const fileStore = useFileStore();
         var data={
-            "FileName" :fileStore.fileInfo.name,
-            "PageSize" : fileStore.options.pageSize,
-            "Page": fileStore.options.page,
-            "Options":fileStore.options
+            //"FileName" :fileStore.fileInfo.fileName,fileName
+            "FileName" :fileStore.fileInfo.fileName,
+            "Options":fileStore.options,
+            "CountColumns": fileStore.fileInfo.countColumns,
+            "CountRows": fileStore.fileInfo.countRecords,
+            "FileInfo": fileStore.fileInfo
         }
         return axio.post("/api/editor/getData", data);
     }

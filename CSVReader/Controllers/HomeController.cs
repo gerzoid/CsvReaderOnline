@@ -3,7 +3,7 @@ using CSVReader.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace CSVReader.Controllers {
+namespace CSVReader.Controllers {    
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
         private readonly ICsvService _service;
@@ -13,8 +13,12 @@ namespace CSVReader.Controllers {
         }
 
         public IActionResult Index() {
-            var answer = _service.OpenFile("c:\\1\\test.csv", true);
-            return View(answer);
+            return View();
+        }
+        [Route("editor")]
+        public IActionResult Editor()
+        {
+            return View();
         }
 
         public IActionResult Privacy() {
