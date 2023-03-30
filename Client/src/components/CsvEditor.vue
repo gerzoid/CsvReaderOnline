@@ -18,8 +18,8 @@ var settings = ref({
   licenseKey: "non-commercial-and-evaluation",
   columns: toRaw(fileStore.fileInfo.columns),
   colHeaders: true,
-  height: "100%",
-
+  width: '100%',
+  height:'100%',
   manualColumnResize: true,
   columnSorting: true,
   wordWrap: false,
