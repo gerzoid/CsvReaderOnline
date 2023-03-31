@@ -2,6 +2,7 @@
 import { ref, watch } from "vue";
 import { useFileStore } from "../stores/filestore";
 import Api from "../plugins/api";
+import { Menu, SubMenu, MenuItem,LayoutHeader } from "ant-design-vue";
 
 const fileStore = useFileStore();
 var selectedKeys = ref([]);
@@ -28,46 +29,45 @@ function onClick(e) {
 </script>
 
 <template>
-  <a-layout-header>
+  <layout-header>
     <div class="logo" />
 
-    <a-menu
-      class="main-menu"
-      v-model:selectedKeys="selectedKeys"
+    <menu
+      class="main-menu"      
       theme="dark"
       mode="horizontal"
       @click="onClick"
     >
-      <a-sub-menu key="1">
+      <sub-menu key="1">
         <template selected #title>Файл</template>
-        <a-menu-item :disabled="!fileStore.itsLoaded" key="close">Закрыть</a-menu-item>
-        <a-menu-item disabled key="export">Экспорт</a-menu-item>
-        <a-menu-item
+        <menu-item :disabled="!fileStore.itsLoaded" key="close">Закрыть</menu-item>
+        <menu-item disabled key="export">Экспорт</menu-item>
+        <menu-item
           :disabled="!fileStore.itsLoaded"
           @click="Api.DownloadFile()"
           key="save"
         >
           Скачать
-        </a-menu-item>
-      </a-sub-menu>
-      <a-menu-item disabled key="2">Правка</a-menu-item>
-      <a-sub-menu key="3">
+        </menu-item>
+      </sub-menu>
+      <menu-item disabled key="2">Правка</menu-item>
+      <sub-menu key="3">
         <template #title>Разное</template>
-        <a-menu-item :disabled="!fileStore.itsLoaded" key="codepage"
-          >Кодировка</a-menu-item
+        <menu-item :disabled="!fileStore.itsLoaded" key="codepage"
+          >Кодировка</menu-item
         >
-      </a-sub-menu>
-      <a-sub-menu key="4">
+      </sub-menu>
+      <sub-menu key="4">
         <template #title>Статистика</template>
-        <a-menu-item :disabled="!fileStore.itsLoaded" key="statistics"
-          >Статистика...</a-menu-item
+        <menu-item :disabled="!fileStore.itsLoaded" key="statistics"
+          >Статистика...</menu-item
         >
-      </a-sub-menu>
-      <a-sub-menu key="5">
+      </sub-menu>
+      <sub-menu key="5">
         <template #title>Помощь</template>
-        <a-menu-item key="about">О сервисе</a-menu-item>
-        <a-menu-item key="message">Сообщение автору</a-menu-item>
-      </a-sub-menu>
-    </a-menu>
-  </a-layout-header>
+        <menu-item key="about">О сервисе</menu-item>
+        <menu-item key="message">Сообщение автору</menu-item>
+      </sub-menu>
+    </menu>
+  </layout-header>
 </template>

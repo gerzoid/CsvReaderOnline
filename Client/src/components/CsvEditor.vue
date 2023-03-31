@@ -12,11 +12,12 @@ var hot = ref(null);
 
 registerAllModules();
 
-console.log(toRaw(fileStore.fileInfo.columns));
-
 var settings = ref({
   licenseKey: "non-commercial-and-evaluation",
   columns: toRaw(fileStore.fileInfo.columns),
+  rowHeaders(index) {
+    return (fileStore.options.page - 1) * fileStore.options.pageSize + index + 1;
+  },
   colHeaders: true,
   width: '100%',
   height:'100%',
@@ -28,16 +29,17 @@ var settings = ref({
 
 //Получение данных с сервера
 function getData() {
-  fileStore.GetData();
-  //hot.value.hotInstance.updateData(result.data);
+  fileStore.GetData().then(
+    result=>{hot.value.hotInstance.updateData(result.data);},
+    error=>{console.log(error);}
+  );
 }
 
 getData();
 </script>
 
 <template>
-   <hot-table :settings="settings"></hot-table>
- <!-- <hot-table ref="hot" :settings="settings"></hot-table>-->
+   <hot-table ref="hot" :settings="settings"></hot-table>
 </template>
 
 <style scoped>
