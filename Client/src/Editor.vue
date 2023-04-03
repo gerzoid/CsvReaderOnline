@@ -1,5 +1,6 @@
 <script setup>
 import CsvEditor from "./components/CsvEditor.vue";
+import Pagination from "./components/Pagination.vue";
 import { showNotification } from "./plugins/notification";
 import { useFileStore } from "./stores/filestore";
 import FileMenu from "./components/Menu.vue";
@@ -15,6 +16,7 @@ fileStore.fileInfo = JSON.parse(localStorage.getItem('csveditor_fileinfo'));
       <file-menu></file-menu>
       <div class="subcontent">
         <csv-editor></csv-editor>
+        <pagination></pagination>
       </div>
     </a-layout-content>
     <a-layout-footer style="text-align: center"> jobtools.ru ©2023 </a-layout-footer>

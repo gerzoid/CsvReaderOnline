@@ -27,6 +27,15 @@ var settings = ref({
   autoColumnSize: true,
 });
 
+watch(
+  () => [fileStore.options.page, fileStore.options.pageSize, fileStore.needReload],
+  () => {
+    getData();
+    fileStore.needReload = false;
+  }
+);
+
+
 //Получение данных с сервера
 function getData() {
   fileStore.GetData().then(

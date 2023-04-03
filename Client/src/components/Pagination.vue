@@ -6,7 +6,7 @@ const fileStore = useFileStore();
 
 const pageSize = ref(fileStore.options.pageSize);
 const current1 = ref(fileStore.options.page);
-const totalRecord = ref(fileStore.fileInfo.countRows);
+const totalRecord = ref(fileStore.fileInfo.countRecords);
 
 watch(pageSize, () => {
   fileStore.options.pageSize = pageSize.value;
@@ -16,6 +16,7 @@ watch(pageSize, () => {
 
 watch(current1, () => {
   fileStore.options.page = current1.value;
+  console.log(fileStore.options.page);
 });
 </script>
 

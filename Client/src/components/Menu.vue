@@ -33,7 +33,7 @@ function onClick(e) {
 
     <a-menu
       v-model:selectedKeys="selectedKeys"
-      class="main-menu"      
+      class="main-menu" 
       theme="dark"
       mode="horizontal"
       @click="onClick"
