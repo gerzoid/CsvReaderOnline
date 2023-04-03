@@ -2,7 +2,6 @@
 import { ref, watch } from "vue";
 import { useFileStore } from "../stores/filestore";
 import Api from "../plugins/api";
-import { Menu, SubMenu, MenuItem,LayoutHeader } from "ant-design-vue";
 
 const fileStore = useFileStore();
 var selectedKeys = ref([]);
@@ -29,45 +28,33 @@ function onClick(e) {
 </script>
 
 <template>
-  <layout-header>
+  <a-layout-header>
     <div class="logo" />
 
-    <menu
+    <a-menu
+      v-model:selectedKeys="selectedKeys"
       class="main-menu"      
       theme="dark"
       mode="horizontal"
       @click="onClick"
     >
-      <sub-menu key="1">
+      <a-sub-menu key="1">
         <template selected #title>Файл</template>
-        <menu-item :disabled="!fileStore.itsLoaded" key="close">Закрыть</menu-item>
-        <menu-item disabled key="export">Экспорт</menu-item>
-        <menu-item
+        <a-menu-item :disabled="!fileStore.itsLoaded" key="close">Закрыть</a-menu-item>
+        <a-menu-item disabled key="export">Экспорт</a-menu-item>
+        <a-menu-item
           :disabled="!fileStore.itsLoaded"
           @click="Api.DownloadFile()"
           key="save"
         >
           Скачать
-        </menu-item>
-      </sub-menu>
-      <menu-item disabled key="2">Правка</menu-item>
-      <sub-menu key="3">
-        <template #title>Разное</template>
-        <menu-item :disabled="!fileStore.itsLoaded" key="codepage"
-          >Кодировка</menu-item
-        >
-      </sub-menu>
-      <sub-menu key="4">
-        <template #title>Статистика</template>
-        <menu-item :disabled="!fileStore.itsLoaded" key="statistics"
-          >Статистика...</menu-item
-        >
-      </sub-menu>
-      <sub-menu key="5">
+        </a-menu-item>
+      </a-sub-menu>
+      <a-sub-menu key="5">
         <template #title>Помощь</template>
-        <menu-item key="about">О сервисе</menu-item>
-        <menu-item key="message">Сообщение автору</menu-item>
-      </sub-menu>
-    </menu>
-  </layout-header>
+        <a-menu-item key="about">О сервисе</a-menu-item>
+        <a-menu-item key="message">Сообщение автору</a-menu-item>
+      </a-sub-menu>
+    </a-menu>
+  </a-layout-header>
 </template>
