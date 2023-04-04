@@ -2,9 +2,10 @@
 
 import { HotTable } from "@handsontable/vue3";
 import { useFileStore } from "../stores/filestore";
-import "handsontable/dist/handsontable.full.min.css";
+import Settings from "../components/Settings.vue";
 import { registerAllModules } from "handsontable/registry";
 import { ref, watch, toRaw, onMounted } from "vue";
+import "handsontable/dist/handsontable.full.min.css";
 
 const fileStore = useFileStore();
 
@@ -49,6 +50,7 @@ getData();
 
 <template>
    <hot-table ref="hot" :settings="settings"></hot-table>
+    <settings></settings>
 </template>
 
 <style scoped>

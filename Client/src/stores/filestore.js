@@ -20,6 +20,7 @@ export const useFileStore = defineStore('fileStore', {
       listUploadedFiles: null,
       needReload: false,
       activeModalComponent: null,
+      visibleSettings: true, //панель настроек a-drawer bottom
     }),
     getters: {
     },

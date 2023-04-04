@@ -6,6 +6,10 @@ import Api from "../plugins/api";
 const fileStore = useFileStore();
 var selectedKeys = ref([]);
 
+function test(){
+  selectedKeys.value=[];
+}
+
 function onClick(e) {
   switch (e.key) {
     case "close":
@@ -50,6 +54,7 @@ function onClick(e) {
           Скачать
         </a-menu-item>
       </a-sub-menu>
+      <a-menu-item key="2" @click="test()">Настройки</a-menu-item>
       <a-sub-menu key="5">
         <template #title>Помощь</template>
         <a-menu-item key="about">О сервисе</a-menu-item>

@@ -16,7 +16,6 @@ watch(pageSize, () => {
 
 watch(current1, () => {
   fileStore.options.page = current1.value;
-  console.log(fileStore.options.page);
 });
 </script>
 
