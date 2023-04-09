@@ -7,7 +7,7 @@ const fileStore = useFileStore();
 var selectedKeys = ref([]);
 
 function test(){
-  selectedKeys.value=[];
+  fileStore.visibleSettings = true;
 }
 
 function onClick(e) {
@@ -54,7 +54,7 @@ function onClick(e) {
           Скачать
         </a-menu-item>
       </a-sub-menu>
-      <a-menu-item key="2" @click="test()">Настройки</a-menu-item>
+      <a-menu-item key="2" @click="test">Настройки</a-menu-item>
       <a-sub-menu key="5">
         <template #title>Помощь</template>
         <a-menu-item key="about">О сервисе</a-menu-item>

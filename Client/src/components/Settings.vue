@@ -5,6 +5,8 @@ import Api from "../plugins/api";
 
 const fileStore = useFileStore();
 
+var encoding = ref('qwerqwrwqerwer');
+var quote=ref(' ');
 
 const showDrawer = () => {
   fileStore.visibleSettings = true;
@@ -18,15 +20,39 @@ const onClose = () => {
 
 <template>
 <a-drawer
-    title="Basic Drawer"
+    title="Настройки"
     placement="top"
     height="200"
-    :closable="false"
+    :closable="true"
     :visible="fileStore.visibleSettings"
     @close="onClose"
   >
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-  </a-drawer>
+  <div class="csv-settings">
+    <a-input-group size="small">
+      <a-row :gutter="8">
+        <a-col :span="5">
+          <a-form-item label="Кодировка">
+          <a-select
+            v-model:value="fileStore.options.encoding"
+            size="small" 
+            style="width: 200px"
+            >
+            <a-select-option value="utf8">UTF-8</a-select-option>
+            <a-select-option value="cp1251">CP1251</a-select-option>
+            <a-select-option value="koi8r">KOI8-R</a-select-option>
+          </a-select>
+        </a-form-item>
+        </a-col>
+        <a-col :span="8">
+          <a-form-item label="Разделитель">
+          <a-input
+            v-model:value="fileStore.options.separator"
+            size="small"
+            placeholder="Авто"
+            style="width: 80px"/>
+          </a-form-item>
+          </a-col>
+      </a-row>
+    </a-input-group>
+    </div>  </a-drawer>
 </template>

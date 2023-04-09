@@ -135,12 +135,19 @@ namespace CsvService
                 HasHeaderRecord = queryData.Options.HasHeader,
                 DetectDelimiter = true,
                 IgnoreBlankLines = true,
-                Encoding = Encoding.GetEncoding("Windows-1251"),
+                //Encoding = Encoding.GetEncoding("Windows-1251"),
+                Encoding = Encoding.GetEncoding(queryData.Options.Encoding),
                 Escape ='|',
                 TrimOptions = TrimOptions.Trim,
                 BadDataFound = null,                
                 Mode = CsvMode.NoEscape
-            };            
+            };
+            if ((queryData.Options.Separator != null) && (queryData.Options.Separator != ""))
+            {
+                config.DetectDelimiter = false;
+                config.Delimiter = queryData.Options.Separator;
+            }
+                
             var rows = new List<Dictionary<string, object>>();
 
             

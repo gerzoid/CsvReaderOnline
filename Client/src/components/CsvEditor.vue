@@ -29,7 +29,7 @@ var settings = ref({
 });
 
 watch(
-  () => [fileStore.options.page, fileStore.options.pageSize, fileStore.needReload],
+  () => [fileStore.options.page, fileStore.options.pageSize, fileStore.needReload, fileStore.options.separator, fileStore.options.encoding],
   () => {
     getData();
     fileStore.needReload = false;
