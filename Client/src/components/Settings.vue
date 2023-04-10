@@ -37,8 +37,8 @@ const onClose = () => {
             size="small" 
             style="width: 200px"
             >
-            <a-select-option value="utf8">UTF-8</a-select-option>
-            <a-select-option value="cp1251">CP1251</a-select-option>
+            <a-select-option value="utf-8">UTF-8</a-select-option>
+            <a-select-option value="Windows-1251">CP1251</a-select-option>
             <a-select-option value="koi8r">KOI8-R</a-select-option>
           </a-select>
         </a-form-item>
@@ -52,6 +52,7 @@ const onClose = () => {
             style="width: 80px"/>
           </a-form-item>
           </a-col>
+          <a-switch v-model:checked="fileStore.options.hasHeader" />
       </a-row>
     </a-input-group>
     </div>  </a-drawer>

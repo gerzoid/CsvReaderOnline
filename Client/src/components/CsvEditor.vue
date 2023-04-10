@@ -40,7 +40,10 @@ watch(
 //Получение данных с сервера
 function getData() {
   fileStore.GetData().then(
-    result=>{hot.value.hotInstance.updateData(result.data);},
+    result=>{
+      fileStore.fileInfo.columns = result.data.columns;
+      settings.value = fileStore.fileInfo.columns;
+      hot.value.hotInstance.updateData(result.data.data);},
     error=>{console.log(error);}
   );
 }

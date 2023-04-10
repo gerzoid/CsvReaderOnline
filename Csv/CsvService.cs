@@ -8,6 +8,9 @@ using System.Globalization;
 using Contracts.Repository;
 using Entities.Models;
 using System.Text;
+using System.IO;
+using System.Reflection;
+using Entities.Answer;
 
 namespace CsvService
 {
@@ -127,8 +130,11 @@ namespace CsvService
             return fileInfo;
         }
 
-        public List<Dictionary<string, object>> GetData(QueryGetData queryData)
+        //public List<Dictionary<string, object>> GetData(QueryGetData queryData)
+        public AnswerGetData GetData(QueryGetData queryData)
         {
+            AnswerGetData answer = new AnswerGetData();
+
             string path = Helper.GetUploadPathFolder(queryData.FileName);
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -148,20 +154,23 @@ namespace CsvService
                 config.Delimiter = queryData.Options.Separator;
             }
                 
-            var rows = new List<Dictionary<string, object>>();
+            answer.Data = new List<Dictionary<string, object>>();
 
             
               int startRow = queryData.Options.PageSize * (queryData.Options.Page - 1);
               startRow = startRow >= queryData.CountRows? queryData.CountRows : startRow;
               int endRow = startRow + queryData.Options.PageSize > queryData.CountRows ? queryData.CountRows : startRow + queryData.Options.PageSize;
 
-            using (var reader = new StreamReader(path, Encoding.GetEncoding("Windows-1251")))
+            using (var reader = new StreamReader(path, Encoding.GetEncoding(queryData.Options.Encoding)))
             using (var csv = new CsvReader(reader, config))
             {
                 string[] nameColumns;
+                                
                 if (queryData.Options.HasHeader)
                 {                                                         
                     csv.Read();
+                    answer.Columns = csv.Parser.Record.Select(p => new Column() { Name = p.Trim(), Title = p.Trim(), Size = 50, Type = "text" }).ToArray();
+
                     nameColumns = new string[csv.Parser.Count];
                     for (int z = 0; z < csv.Parser.Count; z++)                    
                         nameColumns[z] = csv[z].ToString().Trim();
@@ -169,7 +178,9 @@ namespace CsvService
                 }
                 else
                 {
-                    nameColumns = new string[csv.Parser.Count];
+                    answer.Columns = Enumerable.Range(1, csv.Parser.Count).Select(p => new Column() { Name = "Column" + p, Title = "Column" + p, Size = 50, Type = "text" }).ToArray();
+
+                    nameColumns = new string[csv.Parser.Count];                    
                     for (int z = 0; z < csv.Parser.Count; z++)
                         nameColumns[z] = "column" + z;                   
                 }
@@ -184,9 +195,9 @@ namespace CsvService
                     {
                         values.Add(nameColumns[i], csv[i].ToString());
                     }
-                    rows.Add(values);
+                    answer.Data.Add(values);
                 }
-                return rows;
+                return answer;
             }
         }
     }
