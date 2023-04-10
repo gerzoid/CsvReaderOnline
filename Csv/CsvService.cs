@@ -169,31 +169,21 @@ namespace CsvService
                 if (queryData.Options.HasHeader)
                 {                                                         
                     csv.Read();
-                    answer.Columns = csv.Parser.Record.Select(p => new Column() { Name = p.Trim(), Title = p.Trim(), Size = 50, Type = "text" }).ToArray();
-
-                    nameColumns = new string[csv.Parser.Count];
-                    for (int z = 0; z < csv.Parser.Count; z++)                    
-                        nameColumns[z] = csv[z].ToString().Trim();
-                    
+                    answer.Columns = csv.Parser.Record.Select(p => new Column() { Name = p.Trim(), Title = p.Trim(), Size = 50, Type = "text" }).ToArray();                    
                 }
-                else
-                {
+                else                
                     answer.Columns = Enumerable.Range(1, csv.Parser.Count).Select(p => new Column() { Name = "Column" + p, Title = "Column" + p, Size = 50, Type = "text" }).ToArray();
-
-                    nameColumns = new string[csv.Parser.Count];                    
-                    for (int z = 0; z < csv.Parser.Count; z++)
-                        nameColumns[z] = "column" + z;                   
-                }
-
+                
                 for (var i = 0; i < startRow; i++)
                     csv.Read();
+
                 for (int x = startRow; x < endRow; x++)
                 {
                     csv.Read();
                     Dictionary<string, object> values = new Dictionary<string, object>();
-                    for (int i = 0; i < csv.Parser.Count; i++)
+                    for (int i = 0; i < answer.Columns.Count(); i++)
                     {
-                        values.Add(nameColumns[i], csv[i].ToString());
+                        values.Add(answer.Columns[i].Name, csv[i].ToString());
                     }
                     answer.Data.Add(values);
                 }

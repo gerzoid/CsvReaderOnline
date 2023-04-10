@@ -42,7 +42,9 @@ function getData() {
   fileStore.GetData().then(
     result=>{
       fileStore.fileInfo.columns = result.data.columns;
-      settings.value = fileStore.fileInfo.columns;
+      hot.value.hotInstance.updateSettings({
+        columns : fileStore.fileInfo.columns
+      });
       hot.value.hotInstance.updateData(result.data.data);},
     error=>{console.log(error);}
   );
