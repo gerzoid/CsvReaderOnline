@@ -164,23 +164,27 @@ namespace CsvService
             using (var reader = new StreamReader(path, Encoding.GetEncoding(queryData.Options.Encoding)))
             using (var csv = new CsvReader(reader, config))
             {
-                string[] nameColumns;
-                                
+                csv.Read();
+                Dictionary<string, object> values = new Dictionary<string, object>();
+
                 if (queryData.Options.HasHeader)
-                {                                                         
-                    csv.Read();
-                    answer.Columns = csv.Parser.Record.Select(p => new Column() { Name = p.Trim(), Title = p.Trim(), Size = 50, Type = "text" }).ToArray();                    
-                }
-                else                
+                    answer.Columns = csv.Parser.Record.Select(p => new Column() { Name = p.Trim(), Title = p.Trim(), Size = 50, Type = "text" }).ToArray();
+                else
+                {
                     answer.Columns = Enumerable.Range(1, csv.Parser.Count).Select(p => new Column() { Name = "Column" + p, Title = "Column" + p, Size = 50, Type = "text" }).ToArray();
-                
-                for (var i = 0; i < startRow; i++)
+                    for (int i = 0; i < answer.Columns.Count(); i++)                    
+                        values.Add(answer.Columns[i].Name, csv[i].ToString());                    
+                    answer.Data.Add(values);
+                }
+
+                for (var i = queryData.Options.HasHeader ? 1 : 0; i < startRow; i++)
                     csv.Read();
 
                 for (int x = startRow; x < endRow; x++)
                 {
                     csv.Read();
-                    Dictionary<string, object> values = new Dictionary<string, object>();
+
+                    values.Clear();
                     for (int i = 0; i < answer.Columns.Count(); i++)
                     {
                         values.Add(answer.Columns[i].Name, csv[i].ToString());
