@@ -89,7 +89,7 @@ namespace CsvService
         }
 
 
-        public CsvFileInfo OpenFile(string path, bool hasHeader = true)
+        public CsvFileInfo OpenFile(string fileId, bool hasHeader = true)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -104,8 +104,11 @@ namespace CsvService
             
             CsvFileInfo fileInfo = new CsvFileInfo();      
             fileInfo.HasHeader = hasHeader;
-            
-            fileInfo.FileName = Path.GetFileName(path);
+
+            fileInfo.FileName = fileId;
+            string path = Helper.GetUploadPathFolder(fileInfo.FileName);
+
+
             using (var reader = new StreamReader(path))
             using (var csv = new CsvReader(reader, config))
             {

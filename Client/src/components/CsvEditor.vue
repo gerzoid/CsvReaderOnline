@@ -5,6 +5,7 @@ import { useFileStore } from "../stores/filestore";
 import Settings from "../components/Settings.vue";
 import { registerAllModules } from "handsontable/registry";
 import { ref, watch, toRaw, onMounted } from "vue";
+import Spinner from "../components/Spinner.vue";
 import "handsontable/dist/handsontable.full.min.css";
 
 const fileStore = useFileStore();
@@ -29,7 +30,7 @@ var settings = ref({
 });
 
 watch(
-  () => [fileStore.options.page, fileStore.options.pageSize, fileStore.needReload, fileStore.options.separator, fileStore.options.encoding],
+  () => [fileStore.options.page, fileStore.options.pageSize, fileStore.needReload, fileStore.options.separator, fileStore.options.encoding, fileStore.options.hasHeader],
   () => {
     getData();
     fileStore.needReload = false;
