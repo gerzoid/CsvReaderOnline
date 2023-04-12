@@ -7,7 +7,7 @@ import FileMenu from "./components/Menu.vue";
 import Api from "./plugins/api";
 
 const fileStore = useFileStore();
-fileStore.fileInfo = JSON.parse(localStorage.getItem('csveditor_fileinfo'));
+fileStore.fileInfo = JSON.parse(localStorage.getItem("csveditor_fileinfo"));
 </script>
 
 <template>
@@ -21,8 +21,6 @@ fileStore.fileInfo = JSON.parse(localStorage.getItem('csveditor_fileinfo'));
     </a-layout-content>
     <a-layout-footer style="text-align: center"> jobtools.ru ©2023 </a-layout-footer>
   </a-layout>
-
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
