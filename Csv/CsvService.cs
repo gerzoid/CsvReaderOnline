@@ -166,25 +166,32 @@ namespace CsvService
             {
                 csv.Read();
                 Dictionary<string, object> values = new Dictionary<string, object>();
-
                 if (queryData.Options.HasHeader)
                     answer.Columns = csv.Parser.Record.Select(p => new Column() { Name = p.Trim(), Title = p.Trim(), Size = 50, Type = "text" }).ToArray();
                 else
                 {
                     answer.Columns = Enumerable.Range(1, csv.Parser.Count).Select(p => new Column() { Name = "Column" + p, Title = "Column" + p, Size = 50, Type = "text" }).ToArray();
-                    for (int i = 0; i < answer.Columns.Count(); i++)                    
-                        values.Add(answer.Columns[i].Name, csv[i].ToString());                    
-                    answer.Data.Add(values);
+
+                    //Хак. Каостыль. Добавили первую строку, котороую прочитали, не нашел как вернуться на 0 позицию для чтения в csvhelper
+                    //если это первая страница, то отображаем первую запись
+                    if (startRow == 0)
+                    {
+                        for (int i = 0; i < answer.Columns.Count(); i++)
+                            values.Add(answer.Columns[i].Name, csv[i].ToString());
+                        answer.Data.Add(values);
+                    }
                 }
+
 
                 for (var i = queryData.Options.HasHeader ? 1 : 0; i < startRow; i++)
                     csv.Read();
+                
 
                 for (int x = startRow; x < endRow; x++)
                 {
                     csv.Read();
 
-                    values.Clear();
+                    values = new Dictionary<string, object>();
                     for (int i = 0; i < answer.Columns.Count(); i++)
                     {
                         values.Add(answer.Columns[i].Name, csv[i].ToString());
