@@ -20,7 +20,7 @@ watch(current1, () => {
 </script>
 
 <template>
-  <div>
+  <div class="pagination">
     <a-pagination
       show-size-changer
       v-model:current="current1"

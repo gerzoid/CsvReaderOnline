@@ -3,6 +3,9 @@
     height:100%;
   }
 
+  main{
+    z-index: 100;
+  }
   #content, #dopinfo{
     padding: 0 50px;
   }
@@ -11,13 +14,21 @@
   }
   .subcontent{
     background: #fff;
-    padding-bottom: 40px;
-    height:90%;
+    /*padding-bottom: 40px;*/
+    height:84%;
+    border-right: 1px solid #b3b1b1;
     /*overflow: overlay;*/
   }
+  .pagination{
+    background-color: #f0f0f0;
+    border: 1px solid #cdc5c5;
+    height: 42px;
+  }
+
   .ant-pagination{
     text-align: center;
-    padding-top: 4px;
+    margin-top: 4px !important;
+    /*padding-top: 4px;*/
   }
   .ant-modal-body{
     overflow: overlay;
