@@ -13,9 +13,9 @@ export default class Api {
     }
 
     //Открыть файл
-    static OpenFile(id){
+    static OpenFile(fileName){
         var formData = new FormData();
-        formData.append("fileId", id);
+        formData.append("fileName", fileName);
         return axio.post("/api/Files/open", formData);
     }
 
@@ -40,7 +40,6 @@ export default class Api {
         formData.append("formfile", file);
         formData.append("filename", file.name);
         formData.append("userId", fileStore.userId);
-        console.log('1231232');
         return axio
         .post("/api/Files", formData, {
           headers: {

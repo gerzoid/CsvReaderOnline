@@ -93,7 +93,7 @@ namespace CsvService
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                HasHeaderRecord = hasHeader,
+                HasHeaderRecord = true,
                 DetectDelimiter = true,
                 Quote = '\0',
                 IgnoreBlankLines = true,                
@@ -115,7 +115,7 @@ namespace CsvService
                 if (csv.Read())
                 {
                     fileInfo.CountColumns = csv.Parser.Count;
-                    if (hasHeader)
+                    if (csv.Configuration.HasHeaderRecord)
                         fileInfo.Columns = csv.Parser.Record.Select(p => new Column() { Name = p, Title=p, Size=50, Type="text"}).ToArray();
                     else
                     {

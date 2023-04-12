@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using Entities.Models;
 using Entities.Other;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -50,9 +51,9 @@ namespace CSVReader.Controllers
         [HttpPost]
         [EnableCors("Policy1")]
         [Route("open")]
-        public async Task<ActionResult> Open([FromForm] string fileId)
+        public async Task<ActionResult> Open([FromForm] string fileName)
         {
-            var info = _service.OpenFile(fileId);
+            var info = _service.OpenFile(fileName);
             return StatusCode(StatusCodes.Status201Created, info);
         }
     }

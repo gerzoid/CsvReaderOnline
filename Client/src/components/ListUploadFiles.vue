@@ -30,7 +30,7 @@ onMounted(() => {
 });
 
 function onClick(file) {
-  emit("selectedFile", file.filesId, file.originalName);
+  emit("selectedFile", file);
 }
 </script>
 

@@ -3,18 +3,17 @@ import UploadFile from './components/UploadFile.vue'
 import ListUploadFiles from './components/ListUploadFiles.vue'
 import Api from "./plugins/api";
 import { useFileStore } from "./stores/filestore";
-import { ref, watch, onMounted } from "vue";
+import { ref, toRaw } from "vue";
 
 const fileStore = useFileStore();
 var listUploadedFiles = ref(null);
 
-var onSelectedFile = (id, originalName) => {
-  Api.OpenFile(id)
+var onSelectedFile = (file) => {
+  var fileName=file.filesId + "."+file.originalName.split(".").pop();
+  Api.OpenFile(fileName)
     .then((result) => {
-      fileStore.fileInfo = result.data;
-      fileStore.fileName = result.data.name;
-      fileStore.originalFileName = result.data.originalFileName;
-      fileStore.isLoading = true;
+      localStorage.setItem('csveditor_fileinfo', JSON.stringify(result.data));
+      window.location.replace('/editor');
     })
     .catch((e) => {
       console.log(e);
@@ -28,7 +27,7 @@ var onSelectedFile = (id, originalName) => {
   <UploadFile></UploadFile>
   <list-upload-files @selectedFile="onSelectedFile"></list-upload-files>
 
-  
+
 </template>
 
 <style scoped>
