@@ -29,13 +29,22 @@ var settings = ref({
   autoColumnSize: true,
 });
 
+//Отдельно для настроек, чобы вместе с получением данных еще и сохрантья в БД настройки файла
 watch(
-  () => [fileStore.options.page, fileStore.options.pageSize, fileStore.needReload, fileStore.options.separator, fileStore.options.encoding, fileStore.options.hasHeader],
-  () => {
+()=>fileStore.settings, (newValue, oldValue)=>{
+  console.log('settings change')  ;
+  fileStore.options.needSaveSettings = true;
+    getData();
+    fileStore.options.needSaveSettings = false;
+  },{deep: true});
+
+//Отдельно для навигации
+watch(
+  ()=>fileStore.options, (newValue, oldValue)=>{
     getData();
     fileStore.needReload = false;
-  }
-);
+  },{deep: true});
+
 
 
 //Получение данных с сервера
@@ -52,6 +61,7 @@ function getData() {
 }
 
 getData();
+
 </script>
 
 <template>

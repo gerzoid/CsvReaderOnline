@@ -8,21 +8,24 @@ export const useFileStore = defineStore('fileStore', {
     state: () => ({
       fileInfo: [{
         fileName:"",
+        fileId:"",
         countRecords:0,
         countColumns:0,
-        hasHeader:true,
         columns:null}
       ],
       selectedColumnType:'',
       options: {
         page:1,
-        separator:";",
         pageSize:50,
+        needSaveSettings:false,
+      },
+      settings: {
+        separator:"",
+        quote: '|',
         hasHeader:true,
         encoding:'Windows-1251',
       },
       fileName: 'ff2b5992-d722-413a-8bb8-edd17cdae392.csv',
-      userId:'',
       originalFileName:'',
       itsLoaded: false,
       listUploadedFiles: null,

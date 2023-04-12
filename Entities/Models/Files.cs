@@ -11,6 +11,7 @@ namespace Entities.Models
         public DateTime? CreatedAt { get; set; }
         public long? Size { get; set; }
         public bool HasHeader { get; set; }
+        public string? Encoding { get; set; }
         public char Separator { get; set; }
         public int CountColumns { get; set; }
         public int CountRows { get; set; }

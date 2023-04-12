@@ -33,7 +33,7 @@ const onClose = () => {
         <a-col :span="5">
           <a-form-item label="Кодировка">
           <a-select
-            v-model:value="fileStore.options.encoding"
+            v-model:value="fileStore.settings.encoding"
             size="small" 
             style="width: 200px"
             >
@@ -46,13 +46,13 @@ const onClose = () => {
         <a-col :span="8">
           <a-form-item label="Разделитель">
           <a-input
-            v-model:value="fileStore.options.separator"
+            v-model:value="fileStore.settings.separator"
             size="small"
             placeholder="Авто"
             style="width: 80px"/>
           </a-form-item>
           </a-col>
-          <a-switch v-model:checked="fileStore.options.hasHeader" />
+          <a-switch v-model:checked="fileStore.settings.hasHeader" />
       </a-row>
     </a-input-group>
     </div>  </a-drawer>

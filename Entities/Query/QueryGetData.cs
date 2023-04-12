@@ -6,5 +6,6 @@
         public int CountRows {  get; set; }
         public int CountColumns { get; set; }
         public QueryOptions? Options { get; set; }
+        public QuerySettings? Settings{ get; set; }
     }
 }

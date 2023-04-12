@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSVReader.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230327141258_addFields")]
-    partial class addFields
+    [Migration("20230412224007_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace CSVReader.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Encoding")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("HasHeader")

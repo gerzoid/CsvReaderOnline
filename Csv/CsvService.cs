@@ -136,25 +136,34 @@ namespace CsvService
         //public List<Dictionary<string, object>> GetData(QueryGetData queryData)
         public AnswerGetData GetData(QueryGetData queryData)
         {
+            if (queryData.Options.NeedSaveSettings)
+            {
+                var file = _manager.FilesRepository.Find(d => d.FilesId == Guid.Parse(Path.GetFileNameWithoutExtension(queryData.FileName))).FirstOrDefault();
+                file.Separator = queryData.Settings.Separator!="" ? Convert.ToChar(queryData.Settings.Separator) : '\0';
+                file.HasHeader = queryData.Settings.HasHeader;
+                file.Encoding = queryData.Settings.Encoding;
+                _manager.Save();
+            }
+
             AnswerGetData answer = new AnswerGetData();
 
             string path = Helper.GetUploadPathFolder(queryData.FileName);
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                HasHeaderRecord = queryData.Options.HasHeader,
+                HasHeaderRecord = queryData.Settings.HasHeader,
                 DetectDelimiter = true,
                 IgnoreBlankLines = true,
                 //Encoding = Encoding.GetEncoding("Windows-1251"),
-                Encoding = Encoding.GetEncoding(queryData.Options.Encoding),
+                Encoding = Encoding.GetEncoding(queryData.Settings.Encoding),
                 Escape ='|',
                 TrimOptions = TrimOptions.Trim,
                 BadDataFound = null,                
                 Mode = CsvMode.NoEscape
             };
-            if ((queryData.Options.Separator != null) && (queryData.Options.Separator != ""))
+            if ((queryData.Settings.Separator != null) && (queryData.Settings.Separator != ""))
             {
                 config.DetectDelimiter = false;
-                config.Delimiter = queryData.Options.Separator;
+                config.Delimiter = queryData.Settings.Separator;
             }
                 
             answer.Data = new List<Dictionary<string, object>>();
@@ -164,12 +173,12 @@ namespace CsvService
               startRow = startRow >= queryData.CountRows? queryData.CountRows : startRow;
               int endRow = startRow + queryData.Options.PageSize > queryData.CountRows ? queryData.CountRows : startRow + queryData.Options.PageSize;
 
-            using (var reader = new StreamReader(path, Encoding.GetEncoding(queryData.Options.Encoding)))
+            using (var reader = new StreamReader(path, Encoding.GetEncoding(queryData.Settings.Encoding)))
             using (var csv = new CsvReader(reader, config))
             {
                 csv.Read();
                 Dictionary<string, object> values = new Dictionary<string, object>();
-                if (queryData.Options.HasHeader)
+                if (queryData.Settings.HasHeader)
                     answer.Columns = csv.Parser.Record.Select(p => new Column() { Name = p.Trim(), Title = p.Trim(), Size = 50, Type = "text" }).ToArray();
                 else
                 {
@@ -186,7 +195,7 @@ namespace CsvService
                 }
 
 
-                for (var i = queryData.Options.HasHeader ? 1 : 0; i < startRow; i++)
+                for (var i = queryData.Settings.HasHeader ? 1 : 0; i < startRow; i++)
                     csv.Read();
                 
 

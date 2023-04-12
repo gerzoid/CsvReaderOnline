@@ -23,8 +23,8 @@ export default class Api {
     static GetData(){
         const fileStore = useFileStore();
         var data={
-            //"FileName" :fileStore.fileInfo.fileName,fileName
             "FileName" :fileStore.fileInfo.fileName,
+            "Settings":fileStore.settings,
             "Options":fileStore.options,
             "CountColumns": fileStore.fileInfo.countColumns,
             "CountRows": fileStore.fileInfo.countRecords,

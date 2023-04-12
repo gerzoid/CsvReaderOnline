@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CSVReader.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,6 +34,7 @@ namespace CSVReader.Migrations
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Size = table.Column<long>(type: "INTEGER", nullable: true),
                     HasHeader = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Encoding = table.Column<string>(type: "TEXT", nullable: true),
                     Separator = table.Column<char>(type: "TEXT", nullable: false),
                     CountColumns = table.Column<int>(type: "INTEGER", nullable: false),
                     CountRows = table.Column<int>(type: "INTEGER", nullable: false),
