@@ -30,6 +30,8 @@ export default class Api {
             "CountRows": fileStore.fileInfo.countRecords,
             "FileInfo": fileStore.fileInfo
         }
+        //Признак необходимости сохранить изменения настроек файла в БД
+        data.Options = {'needSaveSettings':fileStore.needSaveSettings, ...data.Options  };
         return axio.post("/api/editor/getData", data);
     }
 

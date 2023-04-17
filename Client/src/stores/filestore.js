@@ -17,7 +17,6 @@ export const useFileStore = defineStore('fileStore', {
       options: {
         page:1,
         pageSize:50,
-        needSaveSettings:false,
       },
       settings: {
         separator:"",
@@ -27,6 +26,7 @@ export const useFileStore = defineStore('fileStore', {
       },
       fileName: 'ff2b5992-d722-413a-8bb8-edd17cdae392.csv',
       originalFileName:'',
+      needSaveSettings:false,
       itsLoaded: false,
       listUploadedFiles: null,
       needReload: false,

@@ -32,10 +32,9 @@ var settings = ref({
 //Отдельно для настроек, чобы вместе с получением данных еще и сохрантья в БД настройки файла
 watch(
 ()=>fileStore.settings, (newValue, oldValue)=>{
-  console.log('settings change')  ;
-  fileStore.options.needSaveSettings = true;
+    fileStore.needSaveSettings = true;
     getData();
-    fileStore.options.needSaveSettings = false;
+    fileStore.needSaveSettings = false;
   },{deep: true});
 
 //Отдельно для навигации
