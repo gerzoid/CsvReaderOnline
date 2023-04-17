@@ -7,7 +7,10 @@ import FileMenu from "./components/Menu.vue";
 import Api from "./plugins/api";
 
 const fileStore = useFileStore();
+
 fileStore.fileInfo = JSON.parse(localStorage.getItem("csveditor_fileinfo"));
+fileStore.settings = JSON.parse(localStorage.getItem("csveditor_settings"));
+
 </script>
 
 <template>

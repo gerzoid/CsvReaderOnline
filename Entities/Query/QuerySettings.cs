@@ -10,6 +10,6 @@ namespace Entities.Query
     {
         public bool HasHeader { get; set; }
         public string Separator { get; set; }
-        public string Encoding { get; set; }
+        public string? Encoding { get; set; }
     }
 }

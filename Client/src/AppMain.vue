@@ -12,7 +12,8 @@ var onSelectedFile = (file) => {
   var fileName=file.filesId + "."+file.originalName.split(".").pop();
   Api.OpenFile(fileName)
     .then((result) => {
-      localStorage.setItem('csveditor_fileinfo', JSON.stringify(result.data));
+      localStorage.setItem('csveditor_fileinfo', JSON.stringify(result.data.info));
+      localStorage.setItem('csveditor_settings', JSON.stringify(result.data.settings));
       window.location.replace('/editor');
     })
     .catch((e) => {

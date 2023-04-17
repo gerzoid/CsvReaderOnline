@@ -1,12 +1,24 @@
-﻿namespace Entities.Other
+﻿using Entities.Query;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Entities.Other
 {
     public class CsvFileInfo
     {
-        public string FileName { get; set; }
-        public int CountRecords { get; set; }
-        public int CountColumns { get; set; }
-        public string Separator { get; set; }
-        public bool HasHeader { get ; set; }
-        public Column[]? Columns { get; set; } 
+        public CsvFileInfo()
+        {
+            Info = new FileInfo();
+            Settings = new QuerySettings();
+        }
+
+        public FileInfo Info { get; set; }
+        public QuerySettings Settings { get; set; }
     }
+
+   
 }

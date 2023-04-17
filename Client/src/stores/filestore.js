@@ -24,9 +24,9 @@ export const useFileStore = defineStore('fileStore', {
         hasHeader:true,
         encoding:'Windows-1251',
       },
+      needSaveSettings:false,//Признак необходимости сохранить параметры файла в БД
       fileName: 'ff2b5992-d722-413a-8bb8-edd17cdae392.csv',
       originalFileName:'',
-      needSaveSettings:false,
       itsLoaded: false,
       listUploadedFiles: null,
       needReload: false,

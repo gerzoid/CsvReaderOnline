@@ -11,6 +11,8 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using Entities.Answer;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CsvService
 {
@@ -45,9 +47,9 @@ namespace CsvService
             
             var info = OpenFile(newFile.Path);
 
-            newFile.Separator = info.Separator[0];
-            newFile.CountColumns = info.CountColumns;
-            newFile.CountRows = info.CountRecords;
+            newFile.Separator = info.Settings.Separator[0];
+            newFile.CountColumns = info.Info.CountColumns;
+            newFile.CountRows = info.Info.CountRecords;
 
             _manager.FilesRepository.Create(newFile);
             _manager.Save();
@@ -89,37 +91,50 @@ namespace CsvService
         }
 
 
-        public CsvFileInfo OpenFile(string fileId, bool hasHeader = true)
+        public CsvFileInfo OpenFile(string fileName, bool hasHeader = true)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = true,
                 DetectDelimiter = true,
-                Quote = '\0',
-                IgnoreBlankLines = true,                
+                Quote = '"',
+                IgnoreBlankLines = true,
                 //Encoding = Encoding.GetEncoding(201),
                 TrimOptions = TrimOptions.Trim,
             };
+
+            var file = _manager.FilesRepository.Find(d => d.FilesId == Guid.Parse(Path.GetFileNameWithoutExtension(fileName))).FirstOrDefault();
+            if (file!=null)
+            {
+                config.HasHeaderRecord = file.HasHeader;
+                config.DetectDelimiter = file.Separator=='\0' ? true : false;
+                config.Delimiter = file.Separator == '\0' ? ";" :  Convert.ToString(file.Separator);
+                config.Encoding = Encoding.GetEncoding(file.Encoding) ?? Encoding.ASCII;
+            }
+
             int countRecords = 0;
             
-            CsvFileInfo fileInfo = new CsvFileInfo();      
-            fileInfo.HasHeader = hasHeader;
+            CsvFileInfo fileInfo = new CsvFileInfo();
 
-            fileInfo.FileName = fileId;
-            string path = Helper.GetUploadPathFolder(fileInfo.FileName);
+            fileInfo.Settings.Encoding = config.Encoding.HeaderName;
+            fileInfo.Settings.HasHeader = config.HasHeaderRecord;
+            fileInfo.Settings.Separator = config.Delimiter;
+            fileInfo.Info.FileName = fileName;
+
+            string path = Helper.GetUploadPathFolder(fileInfo.Info.FileName);
 
 
-            using (var reader = new StreamReader(path))
+            using (var reader = new StreamReader(path, config.Encoding))
             using (var csv = new CsvReader(reader, config))
             {
                 if (csv.Read())
                 {
-                    fileInfo.CountColumns = csv.Parser.Count;
+                    fileInfo.Info.CountColumns = csv.Parser.Count;
                     if (csv.Configuration.HasHeaderRecord)
-                        fileInfo.Columns = csv.Parser.Record.Select(p => new Column() { Name = p, Title=p, Size=50, Type="text"}).ToArray();
+                        fileInfo.Info.Columns = csv.Parser.Record.Select(p => new Column() { Name = p, Title=p, Size=50, Type="text"}).ToArray();
                     else
                     {
-                        fileInfo.Columns = Enumerable.Range(1, fileInfo.CountColumns).Select(p => new Column() { Name = "Column" + p,Title = "Column" + p, Size = 50, Type = "text" }).ToArray();
+                        fileInfo.Info.Columns = Enumerable.Range(1, fileInfo.Info.CountColumns).Select(p => new Column() { Name = "Column" + p,Title = "Column" + p, Size = 50, Type = "text" }).ToArray();
                         countRecords++;
                     }
                 }
@@ -127,8 +142,8 @@ namespace CsvService
                 {
                     countRecords++;
                 }
-                fileInfo.CountRecords = countRecords;
-                fileInfo.Separator = csv.Parser.Delimiter;
+                fileInfo.Info.CountRecords = countRecords;
+                fileInfo.Settings.Separator = csv.Parser.Delimiter;
             }
             return fileInfo;
         }
@@ -136,44 +151,44 @@ namespace CsvService
         //public List<Dictionary<string, object>> GetData(QueryGetData queryData)
         public AnswerGetData GetData(QueryGetData queryData)
         {
-            if (queryData.Options.NeedSaveSettings)
-            {
-                var file = _manager.FilesRepository.Find(d => d.FilesId == Guid.Parse(Path.GetFileNameWithoutExtension(queryData.FileName))).FirstOrDefault();
-                file.Separator = queryData.Settings.Separator!="" ? Convert.ToChar(queryData.Settings.Separator) : '\0';
-                file.HasHeader = queryData.Settings.HasHeader;
-                file.Encoding = queryData.Settings.Encoding;
-                _manager.Save();
-            }
-
-            AnswerGetData answer = new AnswerGetData();
-
             string path = Helper.GetUploadPathFolder(queryData.FileName);
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = queryData.Settings.HasHeader,
                 DetectDelimiter = true,
                 IgnoreBlankLines = true,
-                //Encoding = Encoding.GetEncoding("Windows-1251"),
                 Encoding = Encoding.GetEncoding(queryData.Settings.Encoding),
-                Escape ='|',
+                Escape = '|',
                 TrimOptions = TrimOptions.Trim,
-                BadDataFound = null,                
+                BadDataFound = null,
                 Mode = CsvMode.NoEscape
             };
+
+            AnswerGetData answer = new AnswerGetData();
+
+            if (queryData.Options.NeedSaveSettings)
+            {
+                var file = _manager.FilesRepository.Find(d => d.FilesId == Guid.Parse(Path.GetFileNameWithoutExtension(queryData.FileName))).FirstOrDefault();
+                file.Separator = queryData.Settings.Separator != "" ? Convert.ToChar(queryData.Settings.Separator) : '\0';
+                file.HasHeader = queryData.Settings.HasHeader;
+                file.Encoding = queryData.Settings.Encoding;
+                _manager.Save();
+            }
+
             if ((queryData.Settings.Separator != null) && (queryData.Settings.Separator != ""))
             {
                 config.DetectDelimiter = false;
                 config.Delimiter = queryData.Settings.Separator;
             }
-                
-            answer.Data = new List<Dictionary<string, object>>();
 
+            answer.Data = new List<Dictionary<string, object>>();
             
               int startRow = queryData.Options.PageSize * (queryData.Options.Page - 1);
               startRow = startRow >= queryData.CountRows? queryData.CountRows : startRow;
               int endRow = startRow + queryData.Options.PageSize > queryData.CountRows ? queryData.CountRows : startRow + queryData.Options.PageSize;
 
-            using (var reader = new StreamReader(path, Encoding.GetEncoding(queryData.Settings.Encoding)))
+            using (var reader = new StreamReader(path, config.Encoding))
+            //using (var reader = new StreamReader(path, Encoding.GetEncoding(queryData.Settings.Encoding)))
             using (var csv = new CsvReader(reader, config))
             {
                 csv.Read();
