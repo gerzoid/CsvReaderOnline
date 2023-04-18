@@ -124,7 +124,7 @@ namespace CsvService
                 {
                     charsetDetector.Feed(fileStream);
                     charsetDetector.DataEnd();
-                    config.Encoding = Encoding.GetEncoding(charsetDetector.Charset ?? Encoding.Default.HeaderName);
+                    config.Encoding = Encoding.GetEncoding(charsetDetector.Charset ?? "Windows-1251");
                 }
             }
 
@@ -136,8 +136,6 @@ namespace CsvService
             fileInfo.Settings.HasHeader = config.HasHeaderRecord;
             fileInfo.Settings.Separator = config.Delimiter;
             fileInfo.Info.FileName = fileName;
-            
-
 
             using (var reader = new StreamReader(path, config.Encoding))
             using (var csv = new CsvReader(reader, config))
@@ -174,12 +172,19 @@ namespace CsvService
                 IgnoreBlankLines = true,
                 Encoding = Encoding.GetEncoding(queryData.Settings.Encoding),
                 Escape = '|',
-                TrimOptions = TrimOptions.Trim,
+                TrimOptions = TrimOptions.Trim,                
                 BadDataFound = null,
-                Mode = CsvMode.NoEscape
+                Mode = CsvMode.RFC4180
             };
 
             AnswerGetData answer = new AnswerGetData();
+
+            config.MissingFieldFound = (headerNames) =>
+            {
+                Console.WriteLine("sdfsd");
+
+            };
+
 
             if (queryData.Options.NeedSaveSettings)
             {
