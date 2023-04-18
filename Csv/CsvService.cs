@@ -109,7 +109,7 @@ namespace CsvService
                 config.HasHeaderRecord = file.HasHeader;
                 config.DetectDelimiter = file.Separator=='\0' ? true : false;
                 config.Delimiter = file.Separator == '\0' ? ";" :  Convert.ToString(file.Separator);
-                config.Encoding = Encoding.GetEncoding(file.Encoding) ?? Encoding.ASCII;
+                config.Encoding = Encoding.GetEncoding(file.Encoding ?? "ascii") ?? Encoding.ASCII;
             }
 
             int countRecords = 0;
@@ -154,7 +154,7 @@ namespace CsvService
             string path = Helper.GetUploadPathFolder(queryData.FileName);
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                HasHeaderRecord = queryData.Settings.HasHeader,
+                HasHeaderRecord = queryData.Settings.HasHeader ?? false,
                 DetectDelimiter = true,
                 IgnoreBlankLines = true,
                 Encoding = Encoding.GetEncoding(queryData.Settings.Encoding),
@@ -170,7 +170,7 @@ namespace CsvService
             {
                 var file = _manager.FilesRepository.Find(d => d.FilesId == Guid.Parse(Path.GetFileNameWithoutExtension(queryData.FileName))).FirstOrDefault();
                 file.Separator = queryData.Settings.Separator != "" ? Convert.ToChar(queryData.Settings.Separator) : '\0';
-                file.HasHeader = queryData.Settings.HasHeader;
+                file.HasHeader = queryData.Settings.HasHeader ?? false;
                 file.Encoding = queryData.Settings.Encoding;
                 _manager.Save();
             }
@@ -193,7 +193,7 @@ namespace CsvService
             {
                 csv.Read();
                 Dictionary<string, object> values = new Dictionary<string, object>();
-                if (queryData.Settings.HasHeader)
+                if (queryData.Settings.HasHeader ?? false)
                     answer.Columns = csv.Parser.Record.Select(p => new Column() { Name = p.Trim(), Title = p.Trim(), Size = 50, Type = "text" }).ToArray();
                 else
                 {
@@ -210,7 +210,7 @@ namespace CsvService
                 }
 
 
-                for (var i = queryData.Settings.HasHeader ? 1 : 0; i < startRow; i++)
+                for (var i = queryData.Settings.HasHeader ?? false ? 1 : 0; i < startRow; i++)
                     csv.Read();
                 
 
