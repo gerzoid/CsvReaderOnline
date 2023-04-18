@@ -21,7 +21,6 @@ var onSelectedFile = (file) => {
     });
 };
 
-
 </script>
 
 <template>

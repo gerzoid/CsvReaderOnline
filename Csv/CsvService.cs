@@ -13,6 +13,7 @@ using System.Reflection;
 using Entities.Answer;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace CsvService
 {
@@ -93,6 +94,8 @@ namespace CsvService
 
         public CsvFileInfo OpenFile(string fileName, bool hasHeader = true)
         {
+            string path = Helper.GetUploadPathFolder(fileName);
+            
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = true,
@@ -102,6 +105,7 @@ namespace CsvService
                 //Encoding = Encoding.GetEncoding(201),
                 TrimOptions = TrimOptions.Trim,
             };
+            
 
             var file = _manager.FilesRepository.Find(d => d.FilesId == Guid.Parse(Path.GetFileNameWithoutExtension(fileName))).FirstOrDefault();
             if (file!=null)
@@ -109,7 +113,19 @@ namespace CsvService
                 config.HasHeaderRecord = file.HasHeader;
                 config.DetectDelimiter = file.Separator=='\0' ? true : false;
                 config.Delimiter = file.Separator == '\0' ? ";" :  Convert.ToString(file.Separator);
-                config.Encoding = Encoding.GetEncoding(file.Encoding ?? "ascii") ?? Encoding.ASCII;
+                if (file.Encoding != null)
+                    config.Encoding = Encoding.GetEncoding(file.Encoding);
+            }
+            //Атодетект кодировки
+            if ((file==null) ||(file.Encoding is null))
+            {
+                Ude.CharsetDetector charsetDetector = new Ude.CharsetDetector();
+                using (FileStream fileStream = File.OpenRead(path))
+                {
+                    charsetDetector.Feed(fileStream);
+                    charsetDetector.DataEnd();
+                    config.Encoding = Encoding.GetEncoding(charsetDetector.Charset ?? Encoding.Default.HeaderName);
+                }
             }
 
             int countRecords = 0;
@@ -120,8 +136,7 @@ namespace CsvService
             fileInfo.Settings.HasHeader = config.HasHeaderRecord;
             fileInfo.Settings.Separator = config.Delimiter;
             fileInfo.Info.FileName = fileName;
-
-            string path = Helper.GetUploadPathFolder(fileInfo.Info.FileName);
+            
 
 
             using (var reader = new StreamReader(path, config.Encoding))

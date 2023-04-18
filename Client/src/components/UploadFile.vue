@@ -13,8 +13,10 @@ const fileStore = useFileStore();
 var uploadFiles = ({ onSuccess, onError, file }) => {
   var hasError = false;
   fileStore.UploadFile(file).then(
-    result=>{
+   (result)=>{
+      console.log('uploaded' + result);
       localStorage.setItem('csveditor_fileinfo', JSON.stringify(fileStore.fileInfo));
+      localStorage.setItem('csveditor_settings', JSON.stringify(fileStore.settings));
       window.location.replace('/editor');
     },
      error=>{

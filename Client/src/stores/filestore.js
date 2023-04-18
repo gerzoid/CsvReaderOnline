@@ -44,8 +44,8 @@ export const useFileStore = defineStore('fileStore', {
           Api.UploadFile(file)
             .then((data) => {
               self.itsLoaded= true
-              self.fileInfo = data.data;
-              console.log('sd');
+              self.fileInfo = data.data.info;
+              self.settings = data.data.settings;
               resolve();
             })
             .catch((e) => {
