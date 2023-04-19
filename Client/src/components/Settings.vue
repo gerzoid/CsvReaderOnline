@@ -8,11 +8,29 @@ const fileStore = useFileStore();
 var encoding = ref("qwerqwrwqerwer");
 var quote = ref(" ");
 var activeKey = ref(["1"]);
+
+var timerId = null;
+
+function startTimer() {
+  timerId = setTimeout(() => {
+    activeKey.value = "";
+  }, 3000);
+}
+
+function resetTimer() {
+  clearTimeout(this.timerId);
+  timerId = null;
+}
 </script>
 
 <template>
   <a-collapse v-model:activeKey="activeKey">
-    <a-collapse-panel key="1" header="Настройки чтения CSV файла">
+    <a-collapse-panel
+      key="1"
+      header="Настройки чтения CSV файла"
+      @mouseleave="startTimer()"
+      @mouseenter="resetTimer()"
+    >
       <template #extra><setting-outlined /></template>
       <div class="csv-settings">
         <a-input-group size="small">
