@@ -179,13 +179,6 @@ namespace CsvService
 
             AnswerGetData answer = new AnswerGetData();
 
-            config.MissingFieldFound = (headerNames) =>
-            {
-                Console.WriteLine("sdfsd");
-
-            };
-
-
             if (queryData.Options.NeedSaveSettings)
             {
                 var file = _manager.FilesRepository.Find(d => d.FilesId == Guid.Parse(Path.GetFileNameWithoutExtension(queryData.FileName))).FirstOrDefault();
