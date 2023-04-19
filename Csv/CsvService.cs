@@ -236,14 +236,15 @@ namespace CsvService
 
                 for (int x = startRow; x < endRow; x++)
                 {
-                    csv.Read();
-
-                    values = new Dictionary<string, object>();
-                    for (int i = 0; i < answer.Columns.Count(); i++)
+                    if (csv.Read())
                     {
-                        values.Add(answer.Columns[i].Name, csv[i].ToString());
+                        values = new Dictionary<string, object>();
+                        for (int i = 0; i < answer.Columns.Count(); i++)
+                        {
+                            values.Add(answer.Columns[i].Name, csv[i].ToString());
+                        }
+                        answer.Data.Add(values);
                     }
-                    answer.Data.Add(values);
                 }
                 return answer;
             }
