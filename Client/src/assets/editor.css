@@ -33,6 +33,15 @@
   .ant-modal-body{
     overflow: overlay;
   }
+  .ant-collapse-header
+  {
+      padding: 5px 16px !important;
+      background-color: floralwhite;
+  }
+  .ant-layout-header {
+    height: 44px !important;
+    line-height: 44px !important;
+  }
 
   .deleted{
     color:red;

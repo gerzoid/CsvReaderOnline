@@ -1,8 +1,6 @@
 <script setup>
-
 import { HotTable } from "@handsontable/vue3";
 import { useFileStore } from "../stores/filestore";
-import Settings from "../components/Settings.vue";
 import { registerAllModules } from "handsontable/registry";
 import { ref, watch, toRaw, onMounted } from "vue";
 import Spinner from "../components/Spinner.vue";
@@ -21,8 +19,8 @@ var settings = ref({
     return (fileStore.options.page - 1) * fileStore.options.pageSize + index + 1;
   },
   colHeaders: true,
-  width: '100%',
-  height:'100%',
+  width: "100%",
+  height: "100%",
   manualColumnResize: true,
   columnSorting: true,
   wordWrap: false,
@@ -31,41 +29,46 @@ var settings = ref({
 
 //Отдельно для настроек, чобы вместе с получением данных еще и сохрантья в БД настройки файла
 watch(
-()=>fileStore.settings, (newValue, oldValue)=>{
+  () => fileStore.settings,
+  (newValue, oldValue) => {
     fileStore.needSaveSettings = true;
     getData();
     fileStore.needSaveSettings = false;
-  },{deep: true});
+  },
+  { deep: true }
+);
 
 //Отдельно для навигации
 watch(
-  ()=>fileStore.options, (newValue, oldValue)=>{
+  () => fileStore.options,
+  (newValue, oldValue) => {
     getData();
     fileStore.needReload = false;
-  },{deep: true});
-
-
+  },
+  { deep: true }
+);
 
 //Получение данных с сервера
 function getData() {
   fileStore.GetData().then(
-    result=>{
+    (result) => {
       fileStore.fileInfo.columns = result.data.columns;
       hot.value.hotInstance.updateSettings({
-        columns : fileStore.fileInfo.columns
+        columns: fileStore.fileInfo.columns,
       });
-      hot.value.hotInstance.updateData(result.data.data);},
-    error=>{console.log(error);}
+      hot.value.hotInstance.updateData(result.data.data);
+    },
+    (error) => {
+      console.log(error);
+    }
   );
 }
 
 getData();
-
 </script>
 
 <template>
-   <hot-table ref="hot" :settings="settings"></hot-table>
-    <settings></settings>
+  <hot-table ref="hot" :settings="settings"></hot-table>
 </template>
 
 <style scoped>
